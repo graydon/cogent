@@ -62,6 +62,7 @@ Library
               , Cogent.Reorganizer
               , Cogent.Root
               , Cogent.Shallow
+              , Cogent.ShallowHaskell
               , Cogent.ShallowTable
               , Cogent.Simplify
               , Cogent.Sugarfree

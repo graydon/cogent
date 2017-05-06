@@ -94,7 +94,12 @@ import System.IO
 import System.Process (readProcessWithExitCode)
 import Text.Show.Pretty (ppShow)
 import Text.PrettyPrint.ANSI.Leijen as LJ (displayIO, Doc, hPutDoc, plain)
+#if MIN_VERSION_mainland_pretty(0,6,0)
+import Text.PrettyPrint.Mainland as M (hPutDoc, line, string, (</>))
+import Text.PrettyPrint.Mainland.Class as M (ppr)
+#else
 import Text.PrettyPrint.Mainland as M (ppr, hPutDoc, line, string, (</>))
+#endif
 
 -- import Debug.Trace
 
@@ -845,7 +850,7 @@ parseArgs args = case getOpt' Permute options args of
       when shhs $ do
         putProgressLn ("Generating Haskell shallow embedding (" ++ stgMsg stg ++ ")...")
         writeFileMsg shhsfile
-        output shhsfile $ flip hPutStrLn (show shalhs)
+        output shhsfile $ flip hPutStrLn shalhs
       let constsTypeCheck = SF.tcConsts (sel3 $ fromJust $ getLast typedefs) fts
       when ks $ do
         putProgressLn ("Generating shallow constants (" ++ stgMsg stg ++ ")...")
@@ -866,7 +871,7 @@ parseArgs args = case getOpt' Permute options args of
       when shhs_tup $ do
         putProgressLn ("Generating Haskell shallow embedding (with Haskell tuples)...")
         writeFileMsg shhs_tupfile
-        output shhs_tupfile $ flip hPutStrLn (show shalhs_tup)
+        output shhs_tupfile $ flip hPutStrLn shalhs_tup
       when ks_tup $ do
         putProgressLn ("Generating shallow constants (with HOL tuples)...")
         case constsTypeCheck of
